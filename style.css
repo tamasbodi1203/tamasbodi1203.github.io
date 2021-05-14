@@ -1,0 +1,34 @@
+body{
+    background: white;
+    color: black;
+    text-align: center;
+}
+
+#gameArea{
+    border: solid 10px black;
+    color: green;
+    height: 90vh;
+}
+
+#nextElement{
+    position: absolute;
+    left: 25%;
+    border: solid 10px black;
+    height: 18vh;
+}
+
+#scoreBoard{
+    border: solid black 3px;
+    width: 10%;
+    position: absolute;
+    right: 20%;
+    top: 30px;
+}
+
+#music{
+    position: absolute;
+    height: 10%;
+    width: 5%;
+    left: 30px;
+    top: 10px;
+}
