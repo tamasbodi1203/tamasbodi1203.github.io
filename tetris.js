@@ -49,12 +49,14 @@ window.onload = function(){
     });
 
     // Zene némítása
-    let muteButton = document.getElementById('muted');
-    muteButton.addEventListener('click', event =>{
-        if (themeAudio.volume != 0){
+    let musicButton = document.getElementById('music');
+    musicButton.addEventListener('click', event =>{
+        if (themeAudio.volume !== 0){
             themeAudio.volume = 0;
+            document.getElementById('music').src = 'image/soundOff.png';
         } else {
             themeAudio.volume = 0.5;
+            document.getElementById('music').src = 'image/soundOn.png';
         }
     });
 }
