@@ -1,0 +1,27 @@
+body{
+    background: white;
+    color: black;
+    text-align: center;
+}
+
+canvas{
+    border: solid 10px black;
+    color: green;
+    height: 90vh;
+}
+
+#scoreBoard{
+    border: solid black 3px;
+    width: 10%;
+    position: absolute;
+    right: 20%;
+    top: 30px;
+}
+
+#muted{
+    position: absolute;
+    height: 10%;
+    width: 5%;
+    left: 30px;
+    top: 10px;
+}
