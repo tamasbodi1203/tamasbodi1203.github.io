@@ -10,7 +10,7 @@ const ctx = canvas.getContext('2d');
 const ctxNext = canvasNext.getContext('2d');
 
 ctx.scale(20,20);
-ctxNext.scale(30, 30);
+ctxNext.scale(40, 40);
 
 // Audio
 let rotateAudio = new Audio('audio/rotate.wav');
@@ -173,9 +173,9 @@ function draw(){
     });
 
     // A már földet ért elemek kirajzolása
-    drawNextMatrix(randomMatrix, {x: 0, y:0});
     drawMatrix(arena, {x: 0, y:0});
     drawMatrix(player.matrix, player.position);
+    drawNextMatrix(randomMatrix, {x: (arenaNext[0].length /2 | 0) - (randomMatrix[0].length / 2 | 0), y:0});
 }
 
 function arenaSweep() {
@@ -240,8 +240,8 @@ function getRandomMatrix(){
     const pieces = 'ILJOTSZ';
     let piece = pieces[pieces.length * Math.random() | 0];
     randomMatrix = createPiece(piece);
-    console.log(piece)
-    console.log('getRandomMatrix: ' + randomMatrix);
+    // console.log(piece)
+    // console.log('getRandomMatrix: ' + randomMatrix);
 }
 
 // Elemek kirajzolása
@@ -387,7 +387,7 @@ function update(time = 0){
 // 12x20 négyzet méretű játéktér
 const arena = createMatrix(12, 20);
 
-const arenaNext = createMatrix(4, 4);
+const arenaNext = createMatrix(3, 4);
 
 const player = {
     name: 'Noobmaster69',
