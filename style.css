@@ -4,10 +4,17 @@ body{
     text-align: center;
 }
 
-canvas{
+#gameArea{
     border: solid 10px black;
     color: green;
     height: 90vh;
+}
+
+#nextElement{
+    position: absolute;
+    left: 25%;
+    border: solid 10px black;
+    height: 18vh;
 }
 
 #scoreBoard{

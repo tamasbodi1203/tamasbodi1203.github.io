@@ -5,9 +5,12 @@
  */
 
 const canvas = document.getElementById('gameArea');
+const canvasNext = document.getElementById('nextElement');
 const ctx = canvas.getContext('2d');
+const ctxNext = canvasNext.getContext('2d');
 
 ctx.scale(20,20);
+ctxNext.scale(30, 30);
 
 // Audio
 let rotateAudio = new Audio('audio/rotate.wav');
@@ -19,6 +22,7 @@ themeAudio.loop = true;
 
 let paused = true;
 let gameOver = false;
+let randomMatrix;
 
 // Játék indítása / szüneteltetése
 window.onload = function(){
@@ -148,16 +152,28 @@ function createPiece(type){
 function draw(){
     ctx.fillStyle = '#323131';
     ctx.fillRect(0,0, canvas.width, canvas.height);
+    ctxNext.fillStyle = '#323131';
+    ctxNext.fillRect(0,0, canvas.width, canvas.height);
 
     // Négyzetrácsos háttér
     arena.forEach((row, y) => {
         row.forEach((value,x) => {
-                ctx.lineWidth = 0.001;
-                ctx.strokeStyle = 'black';
-                ctx.strokeRect(x, y, 1, 1);
-                    });
+            ctx.lineWidth = 0.001;
+            ctx.strokeStyle = 'black';
+            ctx.strokeRect(x, y, 1, 1);
+        });
     });
 
+    arenaNext.forEach((row, y) => {
+        row.forEach((value,x) => {
+            ctxNext.lineWidth = 0.001;
+            ctxNext.strokeStyle = 'black';
+            ctxNext.strokeRect(x, y, 1, 1);
+        });
+    });
+
+    // A már földet ért elemek kirajzolása
+    drawNextMatrix(randomMatrix, {x: 0, y:0});
     drawMatrix(arena, {x: 0, y:0});
     drawMatrix(player.matrix, player.position);
 }
@@ -181,6 +197,7 @@ function arenaSweep() {
     }
 }
 
+// Ütközésdetektálás
 function collide(arena, player) {
     const [matrix, offset] = [player.matrix, player.position];
         for (let y = 0; y < matrix.length; ++y) {
@@ -211,10 +228,20 @@ const colors = [
 
 ];
 
+getRandomMatrix();
+
 function getRandomColor(){
    random = Math.floor(Math.random() * colors.length);
    if (random === 0) getRandomColor();
    return random;
+}
+
+function getRandomMatrix(){
+    const pieces = 'ILJOTSZ';
+    let piece = pieces[pieces.length * Math.random() | 0];
+    randomMatrix = createPiece(piece);
+    console.log(piece)
+    console.log('getRandomMatrix: ' + randomMatrix);
 }
 
 // Elemek kirajzolása
@@ -228,6 +255,21 @@ function drawMatrix(matrix, offset){
                 // Körvonal
                 ctx.lineWidth = 0.075;
                 ctx.strokeRect(x + offset.x, y + offset.y, 1, 1);
+            }
+        });
+    });
+}
+
+function drawNextMatrix(matrix, offset){
+    matrix.forEach((row, y) => {
+        row.forEach((value,x) => {
+            if (value !== 0) {
+                ctxNext.fillStyle = colors[value];
+                ctxNext.fillRect(x + offset.x, y + offset.y, 1, 1);
+
+                // Körvonal
+                ctxNext.lineWidth = 0.075;
+                ctxNext.strokeRect(x + offset.x, y + offset.y, 1, 1);
             }
         });
     });
@@ -260,8 +302,7 @@ function playerDrop(){
 }
 
 function playerReset() {
-    const pieces = 'ILJOTSZ';
-    player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+    player.matrix = randomMatrix;
     player.position.y = 0;
     player.position.x = (arena[0].length /2 | 0) - (player.matrix[0].length / 2 | 0);
 
@@ -279,6 +320,7 @@ function playerReset() {
         }
         fillScoreBoard();
     }
+    getRandomMatrix();
 }
 
 // Mozgatás
@@ -332,7 +374,6 @@ let lastTime = 0;
 function update(time = 0){
     const deltaTime = time - lastTime;
     lastTime = time;
-    //console.log(deltaTime);
 
     dropCounter += deltaTime;
     if (dropCounter > dropInterval && !paused) {
@@ -345,6 +386,8 @@ function update(time = 0){
 
 // 12x20 négyzet méretű játéktér
 const arena = createMatrix(12, 20);
+
+const arenaNext = createMatrix(4, 4);
 
 const player = {
     name: 'Noobmaster69',
